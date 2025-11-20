@@ -8,51 +8,53 @@ public class OrdenarHashMapPersistencia {
         String archivoSalida = "C:\\archivos\\nombres_ordenados.txt";
 
         try {
-            // 1. Leer HashMap desde archivo
+            //  Leer nombres SIN ID, se asignan automáticamente
             HashMap<Integer, String> tabla = leerHashMapDesdeArchivo(archivoEntrada);
 
-            System.out.println("Datos originales:");
+            System.out.println("Nombres originales:");
             imprimirMapa(tabla);
 
-            // 2. Ordenar por nombre (valor)
+            //  Ordenar por nombre
             List<Map.Entry<Integer, String>> listaOrdenada =
                     new ArrayList<>(tabla.entrySet());
             listaOrdenada.sort(Map.Entry.comparingByValue());
 
-                 System.out.println("\nDatos ordenados por nombre:");
+            System.out.println("\nNombres ordenados:");
             imprimirLista(listaOrdenada);
 
-            // 3. Guardar lista ordenada en archivo
+            //  Guardar en archivo
             guardarEnArchivo(listaOrdenada, archivoSalida);
 
-            System.out.println("\nArchivo guardado correctamente en:\n" + archivoSalida);
+            System.out.println("\nArchivo guardado correctamente en:");
+            System.out.println(archivoSalida);
 
         } catch (IOException e) {
-            System.out.println("Error al leer o escribir archivo: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
- // -------------------------------------------------------
-    // LEE EL ARCHIVO Y LO GUARDA EN UN HASHMAP
-    // -------------------------------------------------------
+
+    // LEE ARCHIVO CON SOLO NOMBRES (SIN ID)
     public static HashMap<Integer, String> leerHashMapDesdeArchivo(String ruta) throws IOException {
         HashMap<Integer, String> mapa = new HashMap<>();
         BufferedReader br = new BufferedReader(new FileReader(ruta));
 
         String linea;
+        int id = 1; // Generamos ID automáticamente
+
         while ((linea = br.readLine()) != null) {
-            String[] partes = linea.split(" ");
-
-            int id = Integer.parseInt(partes[0]);
-            String nombre = partes[1];
-
-            mapa.put(id, nombre);
+            linea = linea.trim();
+            if (!linea.isEmpty()) {
+                mapa.put(id, linea);
+                id++;
+            }
         }
+
         br.close();
         return mapa;
     }
-     // -------------------------------------------------------
-    // GUARDA DATOS ORDENADOS EN ARCHIVO
-    // -------------------------------------------------------
+
+
+    // GUARDA LOS DATOS ORDENADOS EN ARCHIVO
     public static void guardarEnArchivo(List<Map.Entry<Integer, String>> lista, String ruta)
             throws IOException {
 
@@ -65,9 +67,8 @@ public class OrdenarHashMapPersistencia {
 
         bw.close();
     }
-     // -------------------------------------------------------
-    // MÉTODOS DE IMPRESIÓN
-    // -------------------------------------------------------
+
+    // IMPRIMIR HASHMAP
     public static void imprimirMapa(HashMap<Integer, String> mapa) {
         for (Map.Entry<Integer, String> e : mapa.entrySet()) {
             System.out.println(e.getKey() + " → " + e.getValue());
