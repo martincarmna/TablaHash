@@ -31,3 +31,37 @@ public class OrdenarHashMapPersistencia {
             System.out.println("Error al leer o escribir archivo: " + e.getMessage());
         }
     }
+ // -------------------------------------------------------
+    // LEE EL ARCHIVO Y LO GUARDA EN UN HASHMAP
+    // -------------------------------------------------------
+    public static HashMap<Integer, String> leerHashMapDesdeArchivo(String ruta) throws IOException {
+        HashMap<Integer, String> mapa = new HashMap<>();
+        BufferedReader br = new BufferedReader(new FileReader(ruta));
+
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(" ");
+
+            int id = Integer.parseInt(partes[0]);
+            String nombre = partes[1];
+
+            mapa.put(id, nombre);
+        }
+        br.close();
+        return mapa;
+    }
+     // -------------------------------------------------------
+    // GUARDA DATOS ORDENADOS EN ARCHIVO
+    // -------------------------------------------------------
+    public static void guardarEnArchivo(List<Map.Entry<Integer, String>> lista, String ruta)
+            throws IOException {
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(ruta));
+
+        for (Map.Entry<Integer, String> entrada : lista) {
+            bw.write(entrada.getKey() + " " + entrada.getValue());
+            bw.newLine();
+        }
+
+        bw.close();
+    }
