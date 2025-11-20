@@ -1,23 +1,33 @@
+import java.io.*;
 import java.util.*;
 
-public class OrdenarHashMapNombres {
+public class OrdenarHashMapPersistencia {
+
     public static void main(String[] args) {
+        String archivoEntrada = "C:\\archivos\\nombres.txt";
+        String archivoSalida = "C:\\archivos\\nombres_ordenados.txt";
 
-        HashMap<Integer, String> nombres = new HashMap<>();
-        nombres.put(3, "Juan");
-        nombres.put(1, "Pedro");
-        nombres.put(2, "Ana");
+        try {
+            // 1. Leer HashMap desde archivo
+            HashMap<Integer, String> tabla = leerHashMapDesdeArchivo(archivoEntrada);
 
-        // Convertir entradas a lista
-        List<Map.Entry<Integer, String>> lista = new ArrayList<>(nombres.entrySet());
+            System.out.println("Datos originales:");
+            imprimirMapa(tabla);
 
-        // Ordenar por el nombre (valor)
-        lista.sort(Map.Entry.comparingByValue());
+            // 2. Ordenar por nombre (valor)
+            List<Map.Entry<Integer, String>> listaOrdenada =
+                    new ArrayList<>(tabla.entrySet());
+            listaOrdenada.sort(Map.Entry.comparingByValue());
 
-        // Mostrar ordenados
-        System.out.println("Ordenados por nombre:");
-        for (Map.Entry<Integer, String> entrada : lista) {
-            System.out.println(entrada.getKey() + " → " + entrada.getValue());
+                 System.out.println("\nDatos ordenados por nombre:");
+            imprimirLista(listaOrdenada);
+
+            // 3. Guardar lista ordenada en archivo
+            guardarEnArchivo(listaOrdenada, archivoSalida);
+
+            System.out.println("\nArchivo guardado correctamente en:\n" + archivoSalida);
+
+        } catch (IOException e) {
+            System.out.println("Error al leer o escribir archivo: " + e.getMessage());
         }
     }
-}
