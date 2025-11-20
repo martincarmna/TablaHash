@@ -65,3 +65,18 @@ public class OrdenarHashMapPersistencia {
 
         bw.close();
     }
+     // -------------------------------------------------------
+    // MÉTODOS DE IMPRESIÓN
+    // -------------------------------------------------------
+    public static void imprimirMapa(HashMap<Integer, String> mapa) {
+        for (Map.Entry<Integer, String> e : mapa.entrySet()) {
+            System.out.println(e.getKey() + " → " + e.getValue());
+        }
+    }
+
+    public static void imprimirLista(List<Map.Entry<Integer, String>> lista) {
+        for (Map.Entry<Integer, String> e : lista) {
+            System.out.println(e.getKey() + " → " + e.getValue());
+        }
+    }
+}
